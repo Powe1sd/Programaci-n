@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundamentos de Programación con JavaScript</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.65;
+      color: #1e293b;
+      background-color: #f1f5f9;
+    }
+
+    .plataforma { display: flex; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 290px;
+      background-color: #0f172a;
+      color: #e2e8f0;
+      padding: 2rem 1.4rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .logo { font-size: 1.35rem; font-weight: 700; color: #38bdf8; }
+    .logo-sub { font-size: 0.85rem; color: #94a3b8; margin-bottom: 2.2rem; }
+
+    .menu-titulo {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      margin: 1.8rem 0 0.6rem 0.5rem;
+    }
+
+    .menu a {
+      display: block;
+      padding: 0.55rem 0.85rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 0.25rem;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+    }
+
+    .menu a:hover { background-color: #1e293b; color: #fff; }
+    .menu a.activo { background-color: #0369a1; color: white; font-weight: 500; }
+
+    .progreso {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1e293b;
+    }
+
+    .progreso-texto { font-size: 0.84rem; color: #94a3b8; margin-bottom: 0.5rem; }
+
+    .barra {
+      height: 8px;
+      background-color: #1e293b;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .barra-progreso {
+      height: 100%;
+      width: 12%;
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+      border-radius: 99px;
+    }
+
+    /* CONTENIDO */
+    .contenido {
+      flex: 1;
+      padding: 2.5rem 3rem;
+      max-width: 880px;
+    }
+
+    .breadcrumb { font-size: 0.9rem; color: #64748b; margin-bottom: 1.4rem; }
+    .breadcrumb a { color: #0369a1; text-decoration: none; }
+
+    h1 { font-size: 2.1rem; font-weight: 700; margin-bottom: 0.4rem; color: #0f172a; }
+    .subtitulo { font-size: 1.1rem; color: #475569; margin-bottom: 2.3rem; }
+
+    .tema {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    .tema-numero {
+      display: inline-block;
+      background-color: #e0f2fe;
+      color: #0369a1;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      margin-bottom: 0.9rem;
+    }
+
+    .tema h2 { font-size: 1.45rem; margin-bottom: 1rem; color: #0f172a; }
+    .tema h3 { font-size: 1.1rem; margin: 1.6rem 0 0.7rem; color: #0f172a; }
+    .tema p { margin-bottom: 1rem; color: #334155; }
+    .tema ul, .tema ol { margin: 0.8rem 0 1.3rem 1.4rem; }
+    .tema li { margin-bottom: 0.45rem; }
+
+    .destacado {
+      background-color: #f0f9ff;
+      border-left: 4px solid #0ea5e9;
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.4rem 0;
+    }
+
+    .destacado strong { color: #0369a1; }
+
+    .codigo {
+      background-color: #0f172a;
+      color: #e2e8f0;
+      padding: 1.2rem 1.4rem;
+      border-radius: 12px;
+      font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin: 1.3rem 0;
+      line-height: 1.55;
+    }
+
+    .comentario { color: #64748b; }
+    .keyword { color: #c084fc; }
+    .string { color: #86efac; }
+    .number { color: #fcd34d; }
+    .function { color: #7dd3fc; }
+
+    .acciones {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.4rem;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-primario { background-color: #0284c7; color: white; }
+    .btn-secundario { background-color: white; color: #334155; border: 1px solid #cbd5e1; }
+
+    @media (max-width: 768px) {
+      .plataforma { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: relative; }
+      .contenido { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="plataforma">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">JavaScript</div>
+      <div class="logo-sub">Fundamentos de Programación</div>
+
+      <div class="menu-titulo">Introducción</div>
+      <nav class="menu">
+        <a href="#tema-1" class="activo">1. ¿Programación?</a>
+        <a href="#tema-2">2. ¿Por qué JavaScript?</a>
+        <a href="#tema-3">3. ¿Por dónde empezar?</a>
+      </nav>
+
+      <div class="menu-titulo">Conceptos básicos</div>
+      <nav class="menu">
+        <a href="#tema-4">4. Variables y tipos de datos</a>
+        <a href="#tema-5">5. Operadores</a>
+        <a href="#tema-6">6. Condicionales</a>
+        <a href="#tema-7">7. Bucles</a>
+        <a href="#tema-8">8. Funciones</a>
+        <a href="#tema-9">9. Arrays (Listas)</a>
+        <a href="#tema-10">10. Objetos</a>
+        <a href="#tema-11">11. Métodos de Arrays</a>
+        <a href="#tema-12">12. Template Strings</a>
+      </nav>
+
+      <div class="menu-titulo">Práctica</div>
+      <nav class="menu">
+        <a href="#tema-13">13. Ejemplo de Programación</a>
+        <a href="#tema-14">14. Ejercicios</a>
+      </nav>
+
+      <div class="progreso">
+        <div class="progreso-texto">Tu progreso: 5%</div>
+        <div class="barra">
+          <div class="barra-progreso"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="contenido">
+      <div class="breadcrumb">
+        <a href="#">Inicio</a> → Fundamentos con JavaScript
+      </div>
+
+      <h1>Fundamentos de Programación con JavaScript</h1>
+      <p class="subtitulo">Aprende los conceptos esenciales de la programación usando JavaScript desde el primer día.</p>
+
+      <!-- TEMA 1 -->
+      <section class="tema" id="tema-1">
+        <span class="tema-numero">Tema 1</span>
+        <h2>¿Entender la programación</h2>
+        <p><strong>Programar</strong> es darle instrucciones precisas a una computadora para que realice una tarea.</p>
+        <p>La computadora no entiende intenciones, solo instrucciones claras y lógicas. Nosotros escribimos esas instrucciones en un lenguaje de programación.</p>
+        <div class="destacado">
+          <strong>Definición simple:</strong> Programar es resolver problemas escribiendo código.
+        </div>
+      </section>
+
+      <!-- TEMA 2 -->
+      <section class="tema" id="tema-2">
+        <span class="tema-numero">Tema 2</span>
+        <h2>¿Por qué JavaScript?</h2>
+        <p>JavaScript es uno de los lenguajes más usados del mundo. Se utiliza para:</p>
+        <ul>
+          <li>Páginas web interactivas</li>
+          <li>Aplicaciones web completas (Frontend y Backend)</li>
+          <li>Aplicaciones móviles (con React Native)</li>
+          <li>Juegos en el navegador</li>
+          <li>Automatización y scripts</li>
+        </ul>
+        <div class="destacado">
+          <strong>Ventaja principal:</strong> Con JavaScript puedes crear desde una página simple hasta aplicaciones completas usando un solo lenguaje.
+        </div>
+        <p>Además, es el único lenguaje que funciona de forma nativa en todos los navegadores, lo que lo hace indispensable para el desarrollo web.</p>
+      </section>
+
+      <!-- TEMA 3 -->
+      <section class="tema" id="tema-3">
+        <span class="tema-numero">Tema 3</span>
+        <h2>¿Por dónde empezar?</h2>
+        <ol>
+          <li>Entender los conceptos básicos (variables, condicionales, bucles...)</li>
+          <li>Escribir código desde el primer día</li>
+          <li>Practicar con ejemplos pequeños</li>
+          <li>Construir programas simples</li>
+        </ol>
+        <div class="destacado">
+          <strong>Consejo:</strong> No intentes memorizar todo. Escribe, prueba, rompe el código y vuelve a intentarlo. Así es como realmente se aprende.
+        </div>
+      </section>
+
+      <!-- TEMA 4 -->
+      <section class="tema" id="tema-4">
+        <span class="tema-numero">Tema 4</span>
+        <h2>Variables y tipos de datos</h2>
+        <p>Una <strong>variable</strong> es un contenedor donde guardamos información.</p>
+
+        <div class="codigo">
+<span class="comentario">// Declarar variables</span>
+<span class="keyword">let</span> ciudad = <span class="string">"Armenia"</span>;
+<span class="keyword">let</span> edad = <span class="number">27</span>;
+<span class="keyword">let</span> Estudiante = <span class="keyword">true</span>;
+
+<span class="comentario">// Constantes (no cambian)</span>
+<span class="keyword">const</span> PI = <span class="number">3.1416</span>;
+        </div>
+
+        <h3>Tipos de datos más usados:</h3>
+        <ul>
+          <li><strong>String</strong> (texto): "Sistema"</li>
+          <li><strong>Number</strong> (número): 25, 3.14</li>
+          <li><strong>Boolean</strong>: true o false</li>
+          <li><strong>Array</strong>: lista de valores</li>
+          <li><strong>Object</strong>: colección de propiedades</li>
+          <li><strong>Undefined</strong>: cuando una variable no tiene valor asignado</li>
+          <li><strong>Null</strong>: valor vacío intencional</li>
+        </ul>
+
+        <div class="destacado">
+          <strong>Importante:</strong> Usa <code>let</code> cuando el valor pueda cambiar y <code>const</code> cuando no deba cambiar nunca.
+        </div>
+      </section>
+
+      <!-- TEMA 5 -->
+      <section class="tema" id="tema-5">
+        <span class="tema-numero">Tema 5</span>
+        <h2>Operadores</h2>
+        <p>Sirven para hacer cálculos y comparaciones.</p>
+
+        <div class="codigo">
+<span class="keyword">let</span> suma = <span class="number">10</span> + <span class="number">5</span>;          <span class="comentario">// 15</span>
+<span class="keyword">let</span> resta = <span class="number">10</span> - <span class="number">3</span>;         <span class="comentario">// 7</span>
+<span class="keyword">let</span> multiplicacion = <span class="number">4</span> * <span class="number">3</span>; <span class="comentario">// 12</span>
+<span class="keyword">let</span> division = <span class="number">20</span> / <span class="number">4</span>;     <span class="comentario">// 5</span>
+<span class="keyword">let</span> modulo = <span class="number">10</span> % <span class="number">3</span>;        <span class="comentario">// 1 (resto)</span>
+
+<span class="keyword">let</span> esMayor = <span class="number">18</span> >= <span class="number">18</span>;    <span class="comentario">// true</span>
+<span class="keyword">let</span> sonIguales = <span class="number">5</span> === <span class="number">5</span>; <span class="comentario">// true</span>
+<span class="keyword">let</span> sonDiferentes = <span class="number">5</span> !== <span class="number">3</span>; <span class="comentario">// true</span>
+        </div>
+
+        <h3>Operadores lógicos:</h3>
+        <div class="codigo">
+<span class="keyword">let</span> y = <span class="keyword">true</span> && <span class="keyword">false</span>;   <span class="comentario">// false (AND)</span>
+<span class="keyword">let</span> o = <span class="keyword">true</span> || <span class="keyword">false</span>;    <span class="comentario">// true (OR)</span>
+<span class="keyword">let</span> no = !<span class="keyword">true</span>;            <span class="comentario">// false (NOT)</span>
+        </div>
+      </section>
+
+      <!-- TEMA 6 -->
+      <section class="tema" id="tema-6">
+        <span class="tema-numero">Tema 6</span>
+        <h2>Condicionales (if / else)</h2>
+        <p>Permiten tomar decisiones.</p>
+
+        <div class="codigo">
+<span class="keyword">let</span> edad = <span class="number">20</span>;
+
+<span class="keyword">if</span> (edad >= <span class="number">18</span>) {
+  console.log(<span class="string">"Eres mayor de edad"</span>);
+} <span class="keyword">else</span> {
+  console.log(<span class="string">"Eres menor de edad"</span>);
+}
+        </div>
+
+        <h3>else if (múltiples condiciones):</h3>
+        <div class="codigo">
+<span class="keyword">let</span> nota = <span class="number">85</span>;
+
+<span class="keyword">if</span> (nota >= <span class="number">90</span>) {
+  console.log(<span class="string">"Excelente"</span>);
+} <span class="keyword">else if</span> (nota >= <span class="number">70</span>) {
+  console.log(<span class="string">"Aprobado"</span>);
+} <span class="keyword">else</span> {
+  console.log(<span class="string">"Reprobado"</span>);
+}
+        </div>
+      </section>
+
+      <!-- TEMA 7 -->
+      <section class="tema" id="tema-7">
+        <span class="tema-numero">Tema 7</span>
+        <h2>Bucles (loops)</h2>
+        <p>Repiten una acción varias veces.</p>
+
+        <h3>Bucle for:</h3>
+        <div class="codigo">
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i <= <span class="number">5</span>; i++) {
+  console.log(<span class="string">"Número:"</span>, i);
+}
+        </div>
+
+        <h3>Bucle while:</h3>
+        <div class="codigo">
+<span class="keyword">let</span> contador = <span class="number">1</span>;
+
+<span class="keyword">while</span> (contador <= <span class="number">3</span>) {
+  console.log(<span class="string">"Contador:"</span>, contador);
+  contador++;
+}
+        </div>
+
+        <h3>Bucle for...of (recorrer arrays):</h3>
+        <div class="codigo">
+<span class="keyword">let</span> frutas = [<span class="string">"Manzana"</span>, <span class="string">"Banana"</span>, <span class="string">"Naranja"</span>];
+
+<span class="keyword">for</span> (<span class="keyword">let</span> fruta <span class="keyword">of</span> frutas) {
+  console.log(fruta);
+}
+        </div>
+      </section>
+
+      <!-- TEMA 8 -->
+      <section class="tema" id="tema-8">
+        <span class="tema-numero">Tema 8</span>
+        <h2>Funciones</h2>
+        <p>Bloques de código reutilizables.</p>
+
+        <div class="codigo">
+<span class="keyword">function</span> <span class="function">saludar</span>(nombre) {
+  <span class="keyword">return</span> <span class="string">"Buenos dias, "</span> + nombre;
+}
+
+console.log(<span class="function">saludar</span>(<span class="string">"Manzana"</span>)); <span class="comentario">// "Buenos dias, Manzana"</span>
+        </div>
+
+        <h3>Funciones flecha (más modernas):</h3>
+        <div class="codigo">
+<span class="keyword">const</span> <span class="function">sumar</span> = (a, b) => {
+  <span class="keyword">return</span> a + b;
+};
+
+console.log(<span class="function">sumar</span>(<span class="number">5</span>, <span class="number">3</span>)); <span class="comentario">// 8</span>
+        </div>
+      </section>
+
+      <!-- TEMA 9 -->
+      <section class="tema" id="tema-9">
+        <span class="tema-numero">Tema 9</span>
+        <h2>Arrays (Listas)</h2>
+        <p>Permiten guardar varios valores en una sola variable.</p>
+
+        <div class="codigo">
+<span class="keyword">let</span> frutas = [<span class="string">"Manzana"</span>, <span class="string">"Banana"</span>, <span class="string">"Naranja"</span>];
+
+console.log(frutas[<span class="number">0</span>]);     <span class="comentario">// "Manzana"</span>
+console.log(frutas.length); <span class="comentario">// 3</span>
+
+frutas.push(<span class="string">"Uva"</span>);       <span class="comentario">// Agrega al final</span>
+frutas.pop();               <span class="comentario">// Elimina el último</span>
+        </div>
+      </section>
+
+      <!-- TEMA 10 -->
+      <section class="tema" id="tema-10">
+        <span class="tema-numero">Tema 10</span>
+        <h2>Objetos</h2>
+        <p>Guardan información relacionada mediante propiedades.</p>
+
+        <div class="codigo">
+<span class="keyword">let</span> persona = {
+  nombre: <span class="string">"Brahyan"</span>,
+  edad: <span class="number">27</span>,
+  esEstudiante: <span class="keyword">false</span>
+};
+
+console.log(persona.nombre); <span class="comentario">// "Brahyan"</span>
+console.log(persona.edad);   <span class="comentario">// 27</span>
+        </div>
+
+        <h3>Agregar y modificar propiedades:</h3>
+        <div class="codigo">
+persona.ciudad = <span class="string">"Armenia"</span>;  <span class="comentario">// Agregar</span>
+persona.edad = <span class="number">28</span>;          <span class="comentario">// Modificar</span>
+        </div>
+      </section>
+
+      <!-- TEMA 11 - NUEVO -->
+      <section class="tema" id="tema-11">
+        <span class="tema-numero">Tema 11</span>
+        <h2>Métodos de Arrays</h2>
+        <p>Los arrays tienen métodos muy útiles para trabajar con sus elementos.</p>
+
+        <div class="codigo">
+<span class="keyword">let</span> numeros = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+
+<span class="comentario">// map → transforma cada elemento</span>
+<span class="keyword">let</span> dobles = numeros.map(n => n * <span class="number">2</span>);
+console.log(dobles); <span class="comentario">// [2, 4, 6, 8, 10]</span>
+
+<span class="comentario">// filter → filtra elementos</span>
+<span class="keyword">let</span> pares = numeros.filter(n => n % <span class="number">2</span> === <span class="number">0</span>);
+console.log(pares); <span class="comentario">// [2, 4]</span>
+
+<span class="comentario">// find → encuentra el primer elemento que cumpla</span>
+<span class="keyword">let</span> encontrado = numeros.find(n => n > <span class="number">3</span>);
+console.log(encontrado); <span class="comentario">// 4</span>
+        </div>
+      </section>
+
+      <!-- TEMA 12 - NUEVO -->
+      <section class="tema" id="tema-12">
+        <span class="tema-numero">Tema 12</span>
+        <h2>Template Strings</h2>
+        <p>Permiten crear textos de forma más limpia e insertar variables fácilmente.</p>
+
+        <div class="codigo">
+<span class="keyword">let</span> nombre = <span class="string">"Brahyan"</span>;
+<span class="keyword">let</span> edad = <span class="number">27</span>;
+
+<span class="comentario">// Forma antigua</span>
+<span class="keyword">let</span> mensaje1 = <span class="string">"Hola, soy "</span> + nombre + <span class="string">" y tengo "</span> + edad + <span class="string">" años"</span>;
+
+<span class="comentario">// Template string (recomendado)</span>
+<span class="keyword">let</span> mensaje2 = <span class="string">`Hola, soy ${nombre} y tengo ${edad} años`</span>;
+
+console.log(mensaje2);
+        </div>
+
+        <div class="destacado">
+          <strong>Nota:</strong> Se usan comillas invertidas (backticks) `` ` `` en lugar de comillas normales.
+        </div>
+      </section>
+
+      <!-- TEMA 13 - Ejemplo completo (antes era 11) -->
+      <section class="tema" id="tema-13">
+        <span class="tema-numero">Tema 13</span>
+        <h2>Ejemplo de programa completo</h2>
+        <p>Programa sencillo que pide la edad y dice si puede votar:</p>
+
+        <div class="codigo">
+<span class="keyword">function</span> <span class="function">puedeVotar</span>(edad) {
+  <span class="keyword">if</span> (edad >= <span class="number">18</span>) {
+    <span class="keyword">return</span> <span class="string">"Sí puede votar"</span>;
+  } <span class="keyword">else</span> {
+    <span class="keyword">return</span> <span class="string">"No puede votar"</span>;
+  }
+}
+
+<span class="comentario">// Probamos la función</span>
+console.log(<span class="function">puedeVotar</span>(<span class="number">20</span>)); <span class="comentario">// "Sí puede votar"</span>
+console.log(<span class="function">puedeVotar</span>(<span class="number">16</span>)); <span class="comentario">// "No puede votar"</span>
+        </div>
+
+        <div class="destacado">
+          <strong>Resumen del ejemplo:</strong> Usamos una función + un condicional para tomar una decisión. Esto es programación real.
+        </div>
+      </section>
+
+      <!-- TEMA 14 - NUEVO -->
+      <section class="tema" id="tema-14">
+        <span class="tema-numero">Tema 14</span>
+        <h2>Ejercicios para practicar</h2>
+        <p>Intenta resolver estos ejercicios por tu cuenta:</p>
+
+        <ol>
+          <li>Crea una variable con tu nombre y otra con tu edad. Muestra un mensaje usando template string.</li>
+          <li>Escribe una función que reciba un número y diga si es par o impar.</li>
+          <li>Crea un array con 5 nombres y recórrelo con un bucle <code>for...of</code> mostrando cada nombre.</li>
+          <li>Crea un objeto de un producto (nombre, precio, stock) e imprime sus propiedades.</li>
+          <li>Usa <code>filter</code> para obtener solo los números mayores a 10 de este array: <code>[5, 12, 8, 20, 3]</code>.</li>
+        </ol>
+
+        <div class="destacado">
+          <strong>Recomendación:</strong> Escribe el código en la consola del navegador (F12 → Console) o en un archivo .js para practicar.
+        </div>
+      </section>
+
+      <div class="acciones">
+        <a href="#" class="btn btn-secundario">← Inicio</a>
+        <a href="#" class="btn btn-primario">Siguiente: Ejercicios prácticos →</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
